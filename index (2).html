@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Şanlı Yazılım - Portföy</title>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+<style>
+  html { scroll-behavior: smooth; }
+
+  /* Genel sıfırlamalar */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: #e0eaff;
+    line-height: 1.6;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: #011627;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    z-index: 100;
+    box-shadow: 0 2px 8px #00aaff66;
+  }
+  header .logo {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #00cfff;
+  }
+  header .logo span {
+    color: #fff;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+  nav ul li a {
+    color: #aaddff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  nav ul li a:hover,
+  nav ul li a.active {
+    color: #00ffff;
+  }
+  nav ul li a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: #00ffff;
+    transition: width 0.3s ease;
+  }
+  nav ul li a:hover::after,
+  nav ul li a.active::after {
+    width: 100%;
+  }
+
+  section {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+  section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    color: #00cfff;
+    text-align: center;
+    letter-spacing: 1.5px;
+  }
+
+  /* Anasayfa */
+  #anasayfa {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-top: 30px;
+  }
+  #anasayfa .left {
+    flex: 1 1 450px;
+    max-width: 600px;
+  }
+  #anasayfa h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #00d0ff;
+  }
+  #anasayfa h2 {
+    font-size: 2.4rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  #anasayfa h2 span {
+    color: #00ffff;
+    border-bottom: 2px solid #00ffff;
+    padding-bottom: 4px;
+  }
+  #anasayfa p {
+    margin-bottom: 25px;
+    font-size: 1.15rem;
+    color: #a0c8ffcc;
+  }
+  #anasayfa .sosyal {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  #anasayfa .sosyal a {
+    margin-right: 20px;
+    color: #00ffff;
+    transition: transform 0.3s ease;
+  }
+  #anasayfa .sosyal a:hover {
+    color: #00aaff;
+    transform: scale(1.3) rotate(10deg);
+  }
+  #anasayfa button {
+    background: #00ffff;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: 0 0 100px #00ffffaa;
+    transition: all 0.3s ease;
+  }
+  #anasayfa button:hover {
+    background: #00aaff;
+    color: #fff;
+    box-shadow: 0 0 100px #00aaffcc;
+    transform: scale(1.1) rotate(-5deg);
+  }
+  #anasayfa .right {
+    flex: 0 0 300px;
+    max-width: 300px;
+    text-align: center;
+  }
+  #anasayfa .right img {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 5px solid #00ffff;
+    box-shadow: 0 0 100px #00ffffaa;
+    object-fit: cover;
+  }
+
+  /* Yazı makinesi efekti */
+  .typing-text {
+    display: inline-block;
+    border-right: 3px solid #00ffff;
+    animation: blink 1s steps(2, start) infinite;
+    font-weight: 700;
+  }
+  @keyframes blink {
+    0%, 100% { border-color: #00ffff; }
+    50% { border-color: transparent; }
+  }
+
+  /* Kart genel ayar */
+  .kartlar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+  .kart {
+    background: #011627;
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 15px #00ffff88;
+    padding: 20px 25px;
+    width: 280px;
+    border-radius: 18px;
+    color: #c0eaff;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    cursor: default;
+  }
+  .kart:hover {
+    box-shadow: 0 0 35px #00ffffcc;
+    transform: rotateY(10deg) rotateZ(2deg) scale(1.05);
+  }
+  .kart h3 {
+    color: #00ffff;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  .kart p {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  /* Eğitim */
+  #egitim {
+    margin-top: 80px;
+  }
+
+  /* Hizmetler */
+  #hizmetler {
+    margin-top: 80px;
+  }
+
+  /* Referanslar */
+  #referanslar {
+    margin-top: 80px;
+  }
+  .referanslar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+  .referans {
+    background: #011627;
+    border: 2px solid #00ffff;
+    border-radius: 18px;
+    width: 280px;
+    padding: 20px;
+    color: #c0eaff;
+    box-shadow: 0 0 100px #00ffff88;
+    text-align: center;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    cursor: default;
+  }
+  .referans:hover {
+    transform: rotateY(10deg) rotateZ(2deg) scale(1.05);
+    box-shadow: 0 0 35px #00ffffcc;
+  }
+  .referans img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px solid #00ffff;
+    margin-bottom: 15px;
+    object-fit: cover;
+    box-shadow: 0 0 10px #00ffffbb;
+  }
+  .referans p {
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+  .referans strong {
+    color: #00ffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  /* İletişim */
+  #iletisim {
+    margin-top: 80px;
+    max-width: 600px;
+  }
+  #iletisim h2 {
+    margin-bottom: 30px;
+  }
+  form {
+    background: #011627;
+    padding: 30px 25px;
+    border-radius: 18px;
+    box-shadow: 0 0 30px #00ffffaa;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  form input, form textarea {
+    background: #02283a;
+    border: 2px solid #00ffff;
+    padding: 12px 15px;
+    border-radius: 12px;
+    color: #e0eaff;
+    font-size: 1rem;
+    resize: none;
+    transition: border-color 0.3s ease;
+  }
+  form input:focus, form textarea:focus {
+    border-color: #00ffffcc;
+    outline: none;
+  }
+  form button {
+    background: #00ffff;
+    border: none;
+    padding: 15px 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 0 30px #00ffffaa;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  form button:hover {
+    background: #00aaff;
+    color: #fff;
+    box-shadow: 0 0 40px #00aaffcc;
+    transform: scale(1.1) rotate(-5deg);
+  }
+
+  /* İletişim ikonları input içi */
+  .input-ikon {
+    position: relative;
+  }
+  .input-ikon i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #00ffff;
+    font-size: 1.1rem;
+  }
+  .input-ikon input, .input-ikon textarea {
+    padding-left: 35px;
+  }
+
+  /* Responsive */
+  @media(max-width: 860px) {
+    #anasayfa {
+      flex-direction: column;
+      text-align: center;
+    }
+    #anasayfa .left, #anasayfa .right {
+      max-width: 100%;
+      flex: 1 1 100%;
+    }
+    nav ul {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+   }
+/* Hamburger menü */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #00ffff;
+  cursor: pointer;
+}
+
+@media (max-width: 860px) {
+  .hamburger {
+    display: block;
+  }
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    background: #011627;
+    position: absolute;
+    top: 70px;
+    right: 30px;
+    width: 100px;
+    padding: 20px;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00ffff88;
+    z-index: 99;
+  }
+
+  nav ul.active {
+    display: flex;
+  }
+}
+.header {
+  padding: 20px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column; /* Mobilde üst üste */
+  align-items: center;
+  gap: 20px;
+ }
+.menu-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Klasik ve sade */
+}
+
+.logo-icon {
+  height: 30px;         /* Menüye uygun küçük boy */
+  width: auto;          /* Oranı bozulmaz */
+  animation: rotateIn 1s ease-in-out;
+  transition: transform 0.3s, filter 0.3s;
+  filter: drop-shadow(0 0 4px #00aaff); /* Parlak mavi ışıltı */
+}
+
+.logo-icon:hover {
+  transform: scale(1.2);
+  filter: brightness(150%);
+}
+
+@keyframes rotateIn {
+  0% {
+    transform: rotate(-360deg) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.menu-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-name {
+  font-size: 22px;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.brand-name .white {
+  color: white;
+}
+
+.brand-name .blue {
+  color: #00aaff; /* Parlak mavi */
+}
+
+.logo-icon {
+  height: 30px;
+  width: auto;
+  animation: rotateIn 1s ease-in-out;
+  transition: transform 0.3s, filter 0.3s;
+  filter: drop-shadow(0 0 4px #00aaff);
+}
+
+.logo-icon:hover {
+  transform: scale(1.2);
+  filter: brightness(150%);
+}
+
+@keyframes rotateIn {
+  0% {
+    transform: rotate(-360deg) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+.homepage-logo {
+  height: 100px; /* İstediğin boyuta göre ayarla */
+  animation: spinLogo 5s linear infinite;
+}
+
+@keyframes spinLogo {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Genel fade-in ve hafif yukarıdan aşağı hareket */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Kartlar başlangıçta küçük ve saydam */
+.kart {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 8px rgba(0, 170, 255, 0.2);
+  border-radius: 12px;
+}
+
+/* Kartlar görünürken normal boyutta ve hafif glow */
+.kart.visible {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+}
+
+/* Kart hover’da glow ve büyüme */
+.kart:hover {
+  box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+  transform: scale(1.05);
+}
+#anasayfa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 5%;
+  gap: 20px;
+}
+
+#anasayfa .left {
+  flex: 1;
+  min-width: 280px;
+}
+
+#anasayfa .right {
+  flex: 1;
+  text-align: right;
+}
+
+.homepage-logo {
+  max-width: 250px;
+  width: 100%;
+  height: auto;
+  transition: all 0.4s ease;
+}
+
+/* Mobil görünüm için */
+@media (max-width: 900px) {
+  #anasayfa {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  #anasayfa .right {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .homepage-logo {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+}
+.footer {
+  text-align: center;
+  padding: 40px 0 20px;
+  background-color: #000; /* sayfa arka plan rengiyle uyumlu */
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer .sosyal {
+  margin-top: 10px;
+}
+
+.footer .sosyal a {
+  color: #00acee;
+  margin: 0 10px;
+  font-size: 22px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.footer .sosyal a:hover {
+  color: #1e90ff;
+  transform: scale(1.2);
+}
+
+</style>
+</head>
+  <body>
+<header>
+<div class="menu-logo">
+  <span class="brand-name">
+    <span class="white">Şanlı</span> <span class="blue">Yazılım</span>
+  </span>
+  <img src="https://img.freepik.com/premium-vector/sy-letter-logo-design-black-background-initial-monogram-letter-sy-logo-design-vector-template_634196-1214.jpg?w=360" class="logo-icon" alt="Logo">
+</div>
+
+  <button class="hamburger" aria-label="Menüyü Aç/Kapat">
+  <i class="fas fa-bars"></i>
+</button>
+
+  <nav>
+    <ul>
+      <li><a href="#anasayfa" class="active">Anasayfa</a></li>
+      <li><a href="#egitim">Eğitim</a></li>
+      <li><a href="#hizmetler">Hizmetler</a></li>
+      <li><a href="#referanslar">Referanslar</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+    </ul>
+  </nav>
+</header> 
+<section id="anasayfa">
+<div class="left">
+    <h1>Şanlı Yazılıma Hoş Geldiniz</h1>
+<h2>Ben <span class="yazimakinesi"></span></h2>
+    <p>
+      Yazılımla tanışmam lise yıllarında başladı. Üniversite eğitimimle birlikte bu alanda ciddi bir şekilde ilerledim. Web teknolojilerine olan ilgim beni front-end ve back-end taraflarında geliştirdi. Mobil uyumlu ve kullanıcı dostu tasarımlar yapmayı seviyorum. Takım çalışmasına uygun ve disiplinli bir yapıya sahibim. Müşteri memnuniyeti benim için en önemli değerlerden biridir.
+    </p>
+    <div class="sosyal">
+  <a href="https://instagram.com/yunus_xxw" target="_blank" aria-label="Instagram" title="Instagram">
+    <i class="fab fa-instagram"></i>
+  </a>
+  <a href="https://wa.me/905349301112" target="_blank" aria-label="WhatsApp" title="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <a href="https://t.me/sanliyazilim" target="_blank" aria-label="Telegram" title="Telegram">
+    <i class="fab fa-telegram"></i>
+  </a>
+</div>
+
+    <button onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">Bana Ulaş</button>
+  </div>
+  <div class="right">
+    <img src="https://img.freepik.com/premium-vector/sy-letter-logo-design-black-background-initial-monogram-letter-sy-logo-design-vector-template_634196-1214.jpg?w=360" alt="Logo" class="homepage-logo">
+  </div>
+</section>
+
+<section id="egitim">
+  <h2>Eğitim</h2>
+  <div class="kartlar">
+    <div class="kart">
+      <h3>2017 – Lise</h3>
+      <p>Yazılımla ilk kez tanıştığım dönem. Temel programlama bilgileri ve teknolojiye olan ilgim burada başladı.</p>
+    </div>
+    <div class="kart">
+      <h3>2021 – Üniversite</h3>
+      <p>Bilgisayar mühendisliği eğitimi ile yazılım geliştirme, algoritmalar ve veri yapıları üzerine yoğunlaştım.</p>
+    </div>
+    <div class="kart">
+      <h3>2024 – Yüksek Lisans</h3>
+      <p>Yapay zekâ ve ileri seviye yazılım projeleri üzerine akademik çalışmalarımı tamamladım.</p>
+    </div>
+    <div class="kart">
+      <h3>2025 – İş Hayatı</h3>
+      <p>Profesyonel dünyada freelance ve ekip projelerinde aktif rol alarak sektörde deneyim kazandım.</p>
+    </div>
+  </div>
+</section>
+
+  <section id="hizmetler">
+  <h2>Hizmetler</h2>
+  <div class="kartlar">
+    <div class="kart">
+      <h3>Web Sitesi Tasarımı</h3>
+      <p>Modern, hızlı ve SEO uyumlu web siteleri tasarlıyor, mobil uyumlu çözümler sunuyorum.</p>
+    </div>
+    <div class="kart">
+      <h3>Mobil Uygulama Geliştirme</h3>
+      <p>Android ve iOS platformları için kullanıcı dostu, performanslı mobil uygulamalar geliştiriyorum.</p>
+    </div>
+    <div class="kart">
+      <h3>E-Ticaret Çözümleri</h3>
+      <p>Online satış yapan işletmeler için güvenli ve ölçeklenebilir e-ticaret sistemleri oluşturuyorum.</p>
+    </div>
+    <div class="kart">
+      <h3>Danışmanlık ve Destek</h3>
+      <p>Yazılım süreçlerinde danışmanlık veriyor, teknik destek ve eğitim hizmetleri sağlıyorum.</p>
+    </div>
+  </div>
+</section>
+
+<section id="referanslar">
+  <h2>Referanslar</h2>
+  <div class="referanslar">
+    <div class="referans">
+      <img src="ahmet.jpg" alt="Ahmet" />
+      <p>"Şanlı Yazılım ile çalışmak tam bir keyifti. Projem tam zamanında ve beklentilerimin üstünde teslim edildi."</p>
+      <strong>Ahmet</strong>
+    </div>
+    <div class="referans">
+      <img src="efe.jpg" alt="Efe" />
+      <p>"Mobil uygulama geliştirme konusunda gösterdikleri profesyonellik sayesinde işlerim hız kazandı."</p>
+      <strong>Efe</strong>
+    </div>
+    <div class="referans">
+      <img src="yasin.jpg" alt="Yasin" />
+      <p>"Teknik bilgi ve iletişim becerileri harikaydı. Her zaman çözüm odaklı yaklaştılar."</p>
+      <strong>Yasin</strong>
+    </div>
+  </div>
+</section>
+
+<section id="iletisim">
+  <h2>Bana Ulaş</h2>
+  <form action="https://formsubmit.co/yunussanli13@gmail.com" method="POST">
+ <input type="hidden" name="_subject" value="Yeni Mesaj Geldi!">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://webtasari123.github.io/webdesing/tesekkurler.html">
+
+  <input type="text" name="ad" placeholder="Adınız" required>
+  <input type="email" name="email" placeholder="E-posta adresiniz" required>
+  <input type="tel" name="telefon" placeholder="Telefon numaranız">
+  <input type="text" name="konu" placeholder="Konu" required>
+  <textarea name="mesaj" placeholder="Mesajınız" required></textarea>
+
+  <button type="submit">Gönder</button>
+  <div class="footer">
+  <p>© Şanlı Yazılım | Tüm hakları saklıdır.</p>
+  <div class="sosyal">
+    <a href="https://instagram.com/yunus_xxw" target="_blank" aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://wa.me/905349301112" target="_blank" aria-label="WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <a href="https://t.me/sanliyazilim" target="_blank" aria-label="Telegram">
+      <i class="fab fa-telegram"></i>
+    </a>
+  </div>
+</div>
+
+</form>
+
+<script>
+ const words = ["Web Sitesi", "Mobil Uyumlu", "SEO Dostu", "Hızlı", "Güvenilir", "Profesyonel"];
+const typingSpan = document.querySelector('.yazimakinesi');
+
+let wordIndex = 0;
+let letterIndex = 0;
+let currentWord = '';
+let isDeleting = false;
+let typingSpeed = 150;
+let deletingSpeed = 100;
+let pauseTime = 1500;
+
+function type() {
+  if (wordIndex >= words.length) {
+    wordIndex = 0;
+  }
+  currentWord = words[wordIndex];
+
+  if (!isDeleting) {
+    typingSpan.classList.add('typing-text');
+    typingSpan.textContent = currentWord.substring(0, letterIndex + 1);
+    letterIndex++;
+
+    if (letterIndex === currentWord.length) {
+      isDeleting = true;
+      setTimeout(type, pauseTime);
+    } else {
+      setTimeout(type, typingSpeed);
+    }
+  } else {
+    typingSpan.textContent = currentWord.substring(0, letterIndex - 1);
+    letterIndex--;
+
+    if (letterIndex === 0) {
+      isDeleting = false;
+      wordIndex++;
+      setTimeout(type, typingSpeed);
+    } else {
+      setTimeout(type, deletingSpeed);
+    }
+  }
+}
+type();
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav ul');
+
+  hamburger.addEventListener('click', () => {
+    menu.classList.toggle('active');
+  });
+document.addEventListener("DOMContentLoaded", () => {
+    // Body ve tüm sectionlar fade-in ve yukarıdan aşağı animasyonu
+    const fadeElements = document.querySelectorAll("body > *:not(script):not(style), section");
+    fadeElements.forEach(el => {
+      el.classList.add("fade-in-up");
+      // Kısa süre sonra görünür yap
+      setTimeout(() => {
+        el.style.opacity = 1;
+        el.style.transform = "translateY(0)";
+      }, 100);
+    });
+
+    // Kartları sırayla görünür yap
+    const kartlar = document.querySelectorAll(".kart");
+    kartlar.forEach((kart, i) => {
+      setTimeout(() => {
+        kart.classList.add("visible");
+      }, 500 + i * 250); // 500ms gecikme, her kart arası 250ms
+    });
+  });
+
+</script>
+
+
+
+
